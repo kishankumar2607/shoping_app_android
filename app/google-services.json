@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355266912027",
+    "project_id": "fir-groupapp1-7289b",
+    "storage_bucket": "fir-groupapp1-7289b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355266912027:android:5ea09ada3b4826e5737dbe",
+        "android_client_info": {
+          "package_name": "com.bibintomj.firebasegroupapp1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhGgXuPBVSpU_BLTJHN9JWdEnLEISxttI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
