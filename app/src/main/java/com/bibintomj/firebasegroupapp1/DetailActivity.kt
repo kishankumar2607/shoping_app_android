@@ -25,5 +25,11 @@ class DetailActivity : AppCompatActivity() {
         backButton.setOnClickListener({
             finish()
         })
+
+        val cartButton: ImageButton = findViewById(R.id.cartButton)
+        cartButton.setOnClickListener({
+            val intent = Intent(this, CheckoutActivity::class.java)
+            startActivity(intent)
+        })
     }
 }
