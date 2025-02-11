@@ -2,7 +2,10 @@ package com.bibintomj.firebasegroupapp1
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -31,11 +34,13 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val backButton: ImageButton = findViewById(R.id.backButton)
+        val cartButton: ImageButton = findViewById(R.id.cartButton)
+        val addToCartButton: Button = findViewById(R.id.btnAddToCart)
+
         backButton.setOnClickListener({
             finish()
         })
 
-        val cartButton: ImageButton = findViewById(R.id.cartButton)
         cartButton.setOnClickListener({
             val intent = Intent(this, CheckoutActivity::class.java)
             startActivity(intent)
@@ -48,6 +53,10 @@ class DetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Product ID not found", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        addToCartButton.setOnClickListener({
+            Toast.makeText(this@DetailActivity, "Add to Cart Clicked", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun fetchProductData(productId: String){
@@ -76,20 +85,29 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun displayProductDetails(product: Product){
-        binding.title.text = product.title
-        binding.price.text = "$${product.price}"
-        binding.description.text = product.description
-        binding.specifications.text = product.specifications.replace("##", "\n")
+        val txtTitle: TextView = findViewById(R.id.txtTitle)
+        val txtPrice: TextView = findViewById(R.id.txtPrice)
+        val txtDescription: TextView = findViewById(R.id.txtDescription)
+        val txtSpecifications: TextView = findViewById(R.id.txtSpecifications)
+        val productImage: ImageView = findViewById(R.id.productImage)
+
+        txtTitle.text = product.title
+        txtPrice.text = "$${product.price}"
+        txtDescription.text = product.description
+        txtSpecifications.text = product.specifications.replace("##", "\n")
 
         if (product.photos.isNotEmpty()) {
-            val image = product.photos.first()
-            if (image.startsWith("gs://")) {
+            val image: String = product.photos.first()
+
+            if (image.indexOf("gs://") > -1 ){
                 val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(image)
-                storageReference.downloadUrl.addOnSuccessListener { uri ->
-                    Glide.with(this).load(uri).into(binding.productImage)
-                }
+                Glide.with(this)
+                    .load(storageReference)
+                    .into(productImage)
             } else {
-                Glide.with(this).load(image).into(binding.productImage)
+                Glide.with(this)
+                    .load(image)
+                    .into(productImage)
             }
         }
     }
