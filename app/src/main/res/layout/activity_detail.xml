@@ -10,6 +10,7 @@
     tools:context=".DetailActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="#FFFFFF"
@@ -41,7 +42,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,9 +56,9 @@
                 android:id="@+id/productImage"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/avatars"
-                android:layout_marginBottom="8dp"/>
+                tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,55 +70,55 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:text="Leather Messenger Bag"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:textColor="#000000"
-                    android:layout_marginBottom="8dp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:text="$129.99"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:textColor="@color/brandMain"
-                    android:layout_marginBottom="16dp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:text="Description"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:text="Crafted from premium full-grain leather, this messenger bag combines elegance and durability..."
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:text="Specifications"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/specifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:text="Material: Full-Grain Leather\nSize: 15.6 inches\nCompartments: 3 main, 2 side pockets\nClosure: Magnetic\nStrap: Adjustable shoulder strap"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="16dp" />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/addToCartButton"
@@ -123,7 +127,8 @@
                     android:layout_marginVertical="10dp"
                     android:backgroundTint="@color/brandMain"
                     android:text="Add to Cart"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    app:cornerRadius="15dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
