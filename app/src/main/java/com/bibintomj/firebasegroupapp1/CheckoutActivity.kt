@@ -1,5 +1,6 @@
 package com.bibintomj.firebasegroupapp1
 
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -109,7 +110,21 @@ class CheckoutActivity : AppCompatActivity() {
             isValid = false
         }
 
+        val expiryDate = expiryInput.text.toString().trim()
+        val expiryPattern = Regex("^(0[1-9]|1[0-2])/[0-9]{2}$")
+        if (!expiryDate.matches(expiryPattern)) {
+            expiryInput.error = "Enter expiry in MM/YY format"
+            isValid = false
+        } else {
+            val (month, year) = expiryDate.split("/").map { it.toInt() }
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR) % 100
+            val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
 
+            if (year < currentYear || (year == currentYear && month < currentMonth)) {
+                expiryInput.error = "Card is expired"
+                isValid = false
+            }
+        }
 
         val cvv = cvvInput.text.toString().trim()
         if (cvv.length != 3 || !cvv.all { it.isDigit() }) {
