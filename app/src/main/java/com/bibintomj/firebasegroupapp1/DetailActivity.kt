@@ -2,9 +2,12 @@ package com.bibintomj.firebasegroupapp1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -13,9 +16,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.bibintomj.firebasegroupapp1.ProductsAdapter.MyViewHolder
 import com.bibintomj.firebasegroupapp1.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -26,6 +31,7 @@ import java.lang.Error
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private var productId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,16 +52,27 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
-        val productId = intent.getStringExtra("productId")
-        if (productId != null) {
-            fetchProductData(productId)
-        } else {
-            Toast.makeText(this, "Product ID not found", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        productId = intent.getStringExtra("productId") ?: ""
+        fetchProductData(productId)
+        updateCountForProductInCart(productId, 0)
+
+
+        val btnPlus: Button = findViewById(R.id.btnPlus)
+        val btnMinus: Button = findViewById(R.id.btnMinus)
+
+        btnPlus.setOnClickListener({
+            updateCountForProductInCart(productId, 1)
+        })
+
+        btnMinus.setOnClickListener({
+            updateCountForProductInCart(productId, -1)
+        })
 
         addToCartButton.setOnClickListener({
-            Toast.makeText(this@DetailActivity, "Add to Cart Clicked", Toast.LENGTH_SHORT).show()
+            val productId = intent.getStringExtra("productId")
+            if (productId != null) {
+                updateCountForProductInCart(productId, 1)
+            }
         })
     }
 
@@ -110,5 +127,41 @@ class DetailActivity : AppCompatActivity() {
                     .into(productImage)
             }
         }
+    }
+
+    private fun updateCountForProductInCart(productId: String, change: Int) {
+        if (productId.isEmpty()) {
+            return
+        }
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/$productId")
+        val txtCount: TextView = findViewById(R.id.txtCount)
+        val linearLayoutCount: LinearLayout = findViewById(R.id.linearLayoutCount)
+        val btnAddToCart: Button = findViewById(R.id.btnAddToCart)
+
+        cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
+                val newCount = currentCount + change
+
+                txtCount.text = "${newCount}"
+                if (newCount > 0) {
+                    val cartItem = CartItem(null, newCount)
+                    if (currentCount != newCount) {
+                        cartRef.setValue(cartItem)
+                    }
+                    linearLayoutCount.visibility = View.VISIBLE
+                    btnAddToCart.visibility = View.GONE
+                } else {
+                    cartRef.removeValue()
+                    linearLayoutCount.visibility = View.GONE
+                    btnAddToCart.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Cart Remove", "Failed to remove item to cart")
+            }
+        })
     }
 }

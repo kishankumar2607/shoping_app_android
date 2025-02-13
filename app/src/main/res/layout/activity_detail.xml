@@ -120,15 +120,60 @@
                     android:text="Material: Full-Grain Leather\nSize: 15.6 inches\nCompartments: 3 main, 2 side pockets\nClosure: Magnetic\nStrap: Adjustable shoulder strap"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/btnAddToCart"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:backgroundTint="@color/brandMain"
-                    android:text="Add to Cart"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="15dp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <Button
+                            android:id="@+id/btnMinus"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:backgroundTint="@color/brandMain"
+                            android:fontFamily="sans-serif-black"
+                            android:text="―"
+                            app:cornerRadius="15dp" />
+
+                        <TextView
+                            android:id="@+id/txtCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="99"
+                            android:textAlignment="center" />
+
+                        <Button
+                            android:id="@+id/btnPlus"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:backgroundTint="@color/brandMain"
+                            android:fontFamily="sans-serif-black"
+                            android:text="＋"
+                            app:cornerRadius="15dp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnAddToCart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/brandMain"
+                        android:text="Add to Cart"
+                        app:cornerRadius="15dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

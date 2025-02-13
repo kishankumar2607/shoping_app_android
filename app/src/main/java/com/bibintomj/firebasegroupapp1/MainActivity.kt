@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
-            result -> this.onSignInResult(result)
+        result -> this.onSignInResult(result)
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
