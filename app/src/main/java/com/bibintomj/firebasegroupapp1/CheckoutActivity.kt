@@ -73,6 +73,8 @@ class CheckoutActivity : AppCompatActivity() {
 
         val rView: RecyclerView = findViewById(R.id.rView)
         rView.layoutManager = LinearLayoutManager(this)
+
+        loadCartProducts()
     }
 
     override fun onStart() {
@@ -154,6 +156,19 @@ class CheckoutActivity : AppCompatActivity() {
 
     }
 
+    private fun loadCartProducts() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId")
+
+        val options = FirebaseRecyclerOptions.Builder<CartItem>()
+            .setQuery(cartRef, CartItem::class.java)
+            .build()
+
+        adapter = CartAdapter(options)
+        val rView: RecyclerView = findViewById(R.id.rView)
+        rView.adapter = adapter
+        adapter?.startListening()
+    }
 
 }
 

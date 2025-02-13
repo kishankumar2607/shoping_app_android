@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
-class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerAdapter<Product, CartAdapter.MyViewHolder>(options) {
+class CartAdapter(options: FirebaseRecyclerOptions<CartItem>) : FirebaseRecyclerAdapter<CartItem, CartAdapter.MyViewHolder>(options) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,12 +32,12 @@ class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerA
     override fun onBindViewHolder(
         holder: CartAdapter.MyViewHolder,
         position: Int,
-        model: Product
+        model: CartItem
     ) {
-        holder.txtPrice.text = "$${model.price}"
-        holder.txtTitle.text = model.title
+        holder.txtPrice.text = "$${model.product?.price}"
+        holder.txtTitle.text = model.product?.title
 
-        val image: String = model.photos.first()
+        val image: String = model.product?.photos?.first() ?: ""
 
         if (image.indexOf("gs://") > -1) {
             val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(image)
@@ -50,11 +50,8 @@ class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerA
                 .into(holder.imgProduct)
         }
 
-        val productId: String? = getRef(position).key
+        updateCountForProductInCart(model, 0, holder)
 
-        if (productId != null) {
-            updateCountForProductInCart(productId, 0, holder)
-        }
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
             intent.putExtra("productId", getRef(position).key)
@@ -62,21 +59,17 @@ class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerA
         }
 
         holder.btnPlus.setOnClickListener({
-            if (productId != null) {
-                updateCountForProductInCart(productId, 1, holder)
-            }
+            updateCountForProductInCart(model, 1, holder)
         })
 
         holder.btnMinus.setOnClickListener({
-            if (productId != null) {
-                updateCountForProductInCart(productId, -1, holder)
-            }
+            updateCountForProductInCart(model, -1, holder)
         })
     }
 
-    private fun updateCountForProductInCart(productId: String, change: Int, holder: MyViewHolder) {
+    private fun updateCountForProductInCart(cartItem: CartItem, change: Int, holder: MyViewHolder) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/$productId")
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${cartItem.product?.id ?: ""}")
 
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -85,7 +78,7 @@ class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerA
 
                 holder.txtCount.text = "${newCount}"
                 if (newCount > 0) {
-                    val cartItem = CartItem(null, newCount)
+                    val cartItem = CartItem(cartItem.product, newCount)
                     if (currentCount != newCount) {
                         cartRef.setValue(cartItem)
                     }
