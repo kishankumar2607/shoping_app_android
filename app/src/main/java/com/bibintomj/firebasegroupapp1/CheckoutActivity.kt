@@ -41,7 +41,6 @@ class CheckoutActivity : AppCompatActivity() {
             finish()
         })
 
-
         fullnameInput = findViewById(R.id.fullname_input)
         emailInput = findViewById(R.id.email_input)
         streetInput = findViewById(R.id.street_input)
