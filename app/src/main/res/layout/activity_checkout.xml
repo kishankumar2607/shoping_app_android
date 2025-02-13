@@ -40,12 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/cartButton"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:background="#00000000"
-                app:srcCompat="@drawable/cart_icon" />
         </LinearLayout>
 
         <ScrollView
@@ -57,32 +51,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Cart Summary"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Personal Details"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -99,8 +95,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:hint="Email">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email_input"
@@ -112,12 +108,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Address"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -134,8 +130,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="City"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:hint="City">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/city_input"
@@ -147,15 +143,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:hint="Province">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -168,8 +164,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="1"
                         android:hint="Postal Code">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -181,16 +177,15 @@
                 </LinearLayout>
 
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Card Details"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -219,15 +214,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
                     android:weightSum="2">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:hint="Expiry Date (MM/YY)">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -240,8 +235,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="1"
                         android:hint="CVV">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -263,31 +258,31 @@
                         android:id="@+id/cancel_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="8dp"
-                        android:text="Cancel"
+                        android:layout_weight="1"
                         android:backgroundTint="#EBEBEB"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
+                        android:text="Cancel"
                         android:textAllCaps="false"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        app:cornerRadius="15dp"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="16dp" />
+                        app:cornerRadius="15dp" />
 
                     <Button
                         android:id="@+id/confirm_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="1"
                         android:backgroundTint="@color/brandMain"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
                         android:text="Checkout"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
-                        app:cornerRadius="15dp"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="16dp" />
+                        app:cornerRadius="15dp" />
                 </LinearLayout>
 
             </LinearLayout>

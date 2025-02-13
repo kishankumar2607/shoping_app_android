@@ -31,7 +31,7 @@ import java.lang.Error
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private var productId: String = ""
+    private var product: Product = Product()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,26 +52,24 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
-        productId = intent.getStringExtra("productId") ?: ""
+        val productId = intent.getStringExtra("productId") ?: ""
         fetchProductData(productId)
-        updateCountForProductInCart(productId, 0)
-
 
         val btnPlus: Button = findViewById(R.id.btnPlus)
         val btnMinus: Button = findViewById(R.id.btnMinus)
 
         btnPlus.setOnClickListener({
-            updateCountForProductInCart(productId, 1)
+            updateCountForProductInCart(product, 1)
         })
 
         btnMinus.setOnClickListener({
-            updateCountForProductInCart(productId, -1)
+            updateCountForProductInCart(product, -1)
         })
 
         addToCartButton.setOnClickListener({
             val productId = intent.getStringExtra("productId")
             if (productId != null) {
-                updateCountForProductInCart(productId, 1)
+                updateCountForProductInCart(product, 1)
             }
         })
     }
@@ -83,11 +81,9 @@ class DetailActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (productSnapshot in snapshot.children) {
-                        val product = productSnapshot.getValue(Product::class.java)
-                        if (product != null) {
-                            displayProductDetails(product)
-                            break
-                        }
+                        product = productSnapshot.getValue(Product::class.java) ?: Product()
+                        displayProductDetails(product)
+                        break
                     }
                 } else {
                     Toast.makeText(this@DetailActivity, "Product not found", Toast.LENGTH_SHORT).show()
@@ -127,14 +123,13 @@ class DetailActivity : AppCompatActivity() {
                     .into(productImage)
             }
         }
+
+        updateCountForProductInCart(product, 0)
     }
 
-    private fun updateCountForProductInCart(productId: String, change: Int) {
-        if (productId.isEmpty()) {
-            return
-        }
+    private fun updateCountForProductInCart(product: Product, change: Int) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/$productId")
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${product.id}")
         val txtCount: TextView = findViewById(R.id.txtCount)
         val linearLayoutCount: LinearLayout = findViewById(R.id.linearLayoutCount)
         val btnAddToCart: Button = findViewById(R.id.btnAddToCart)
@@ -146,7 +141,7 @@ class DetailActivity : AppCompatActivity() {
 
                 txtCount.text = "${newCount}"
                 if (newCount > 0) {
-                    val cartItem = CartItem(null, newCount)
+                    val cartItem = CartItem(product, newCount)
                     if (currentCount != newCount) {
                         cartRef.setValue(cartItem)
                     }

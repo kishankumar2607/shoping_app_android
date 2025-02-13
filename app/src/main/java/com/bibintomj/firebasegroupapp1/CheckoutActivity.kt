@@ -2,6 +2,7 @@ package com.bibintomj.firebasegroupapp1
 
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -11,12 +12,22 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bibintomj.firebasegroupapp1.databinding.ActivityCheckoutBinding
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
 
 class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
+    private var adapter: CartAdapter? = null
 
     private lateinit var fullnameInput: TextInputEditText
     private lateinit var emailInput: TextInputEditText
@@ -59,6 +70,14 @@ class CheckoutActivity : AppCompatActivity() {
                 Toast.makeText(this, "Checkout successful!", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val rView: RecyclerView = findViewById(R.id.rView)
+        rView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter?.startListening()
     }
 
     private fun validateInputs(): Boolean {
@@ -134,6 +153,7 @@ class CheckoutActivity : AppCompatActivity() {
         return isValid
 
     }
+
 
 }
 

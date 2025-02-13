@@ -9,13 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,17 +20,17 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
-class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerAdapter<Product, ProductsAdapter.MyViewHolder>(options) {
+class CartAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyclerAdapter<Product, CartAdapter.MyViewHolder>(options) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ProductsAdapter.MyViewHolder {
+    ): CartAdapter.MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return MyViewHolder(inflater, parent)
     }
 
     override fun onBindViewHolder(
-        holder: ProductsAdapter.MyViewHolder,
+        holder: CartAdapter.MyViewHolder,
         position: Int,
         model: Product
     ) {
@@ -56,7 +53,7 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         val productId: String? = getRef(position).key
 
         if (productId != null) {
-            updateCountForProductInCart(model, 0, holder)
+            updateCountForProductInCart(productId, 0, holder)
         }
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
@@ -65,22 +62,21 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         }
 
         holder.btnPlus.setOnClickListener({
-            updateCountForProductInCart(model, 1, holder)
+            if (productId != null) {
+                updateCountForProductInCart(productId, 1, holder)
+            }
         })
 
         holder.btnMinus.setOnClickListener({
-            updateCountForProductInCart(model, -1, holder)
-        })
-
-        holder.btnAddToCart.setOnClickListener({
-            updateCountForProductInCart(model, 1, holder)
-
+            if (productId != null) {
+                updateCountForProductInCart(productId, -1, holder)
+            }
         })
     }
 
-    private fun updateCountForProductInCart(product: Product, change: Int, holder: MyViewHolder) {
+    private fun updateCountForProductInCart(productId: String, change: Int, holder: MyViewHolder) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${product.id}")
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/$productId")
 
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -89,16 +85,12 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
 
                 holder.txtCount.text = "${newCount}"
                 if (newCount > 0) {
-                    val cartItem = CartItem(product, newCount)
+                    val cartItem = CartItem(null, newCount)
                     if (currentCount != newCount) {
                         cartRef.setValue(cartItem)
                     }
-                    holder.linearLayoutCount.visibility = View.VISIBLE
-                    holder.btnAddToCart.visibility = View.GONE
                 } else {
                     cartRef.removeValue()
-                    holder.linearLayoutCount.visibility = View.GONE
-                    holder.btnAddToCart.visibility = View.VISIBLE
                 }
             }
 
@@ -108,14 +100,12 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         })
     }
 
-    class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder(inflater.inflate(R.layout.product_card_layout, parent, false)) {
+    class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder(inflater.inflate(R.layout.cart_product_cart_layout, parent, false)) {
         val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct)
         val txtPrice: TextView = itemView.findViewById(R.id.txtPrice)
         val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
-        val linearLayoutCount: LinearLayout = itemView.findViewById(R.id.linearLayoutCount)
         val btnPlus: Button = itemView.findViewById(R.id.btnPlus)
         val txtCount: TextView = itemView.findViewById(R.id.txtCount)
         val btnMinus: Button = itemView.findViewById(R.id.btnMinus)
-        val btnAddToCart: Button = itemView.findViewById(R.id.btnAddToCart)
     }
 }
