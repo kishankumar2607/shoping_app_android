@@ -19,6 +19,7 @@ import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
@@ -53,11 +54,14 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
                 .into(holder.imgProduct)
         }
 
-        val productId: String? = getRef(position).key
+//        val productId: String? = getRef(position).key
+//
+//        if (productId != null) {
+//            updateCountForProductInCart(model, 0, holder)
+//        }
 
-        if (productId != null) {
-            updateCountForProductInCart(model, 0, holder)
-        }
+        attachCartListener(model, holder)
+
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
             intent.putExtra("productId", getRef(position).key)
@@ -65,47 +69,76 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         }
 
         holder.btnPlus.setOnClickListener({
-            updateCountForProductInCart(model, 1, holder)
+            updateCountForProductInCart(model, 1)
         })
 
         holder.btnMinus.setOnClickListener({
-            updateCountForProductInCart(model, -1, holder)
+            updateCountForProductInCart(model, -1)
         })
 
         holder.btnAddToCart.setOnClickListener({
-            updateCountForProductInCart(model, 1, holder)
+            updateCountForProductInCart(model, 1)
 
         })
     }
 
-    private fun updateCountForProductInCart(product: Product, change: Int, holder: MyViewHolder) {
+    private fun attachCartListener(product: Product, holder: MyViewHolder) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${product.id}")
 
-        cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
-                val newCount = currentCount + change
+        holder.cartListener?.let {
+            cartRef.removeEventListener(it)
+        }
+        holder.cartRef = cartRef
 
-                holder.txtCount.text = "${newCount}"
-                if (newCount > 0) {
-                    val cartItem = CartItem(product, newCount)
-                    if (currentCount != newCount) {
-                        cartRef.setValue(cartItem)
-                    }
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val count = snapshot.child("count").getValue(Int::class.java) ?: 0
+                holder.txtCount.text = count.toString()
+                if (count > 0) {
                     holder.linearLayoutCount.visibility = View.VISIBLE
                     holder.btnAddToCart.visibility = View.GONE
                 } else {
-                    cartRef.removeValue()
                     holder.linearLayoutCount.visibility = View.GONE
                     holder.btnAddToCart.visibility = View.VISIBLE
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("Cart Remove", "Failed to remove item to cart")
+                Log.e("CartListener", "Error: ${error.message}")
+            }
+        }
+        holder.cartListener = listener
+        cartRef.addValueEventListener(listener)
+    }
+
+    private fun updateCountForProductInCart(product: Product, change: Int) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${product.id}")
+        cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
+                val newCount = currentCount + change
+                if (newCount > 0) {
+                    val cartItem = CartItem(product, newCount)
+                    cartRef.setValue(cartItem)
+                } else {
+                    cartRef.removeValue()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Cart", "Failed to update count: ${error.message}")
             }
         })
+    }
+
+    override fun onViewRecycled(holder: MyViewHolder) {
+        super.onViewRecycled(holder)
+        holder.cartListener?.let {
+            holder.cartRef?.removeEventListener(it)
+            holder.cartListener = null
+        }
     }
 
     class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder(inflater.inflate(R.layout.product_card_layout, parent, false)) {
@@ -117,5 +150,8 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         val txtCount: TextView = itemView.findViewById(R.id.txtCount)
         val btnMinus: Button = itemView.findViewById(R.id.btnMinus)
         val btnAddToCart: Button = itemView.findViewById(R.id.btnAddToCart)
+
+        var cartListener: ValueEventListener? = null
+        var cartRef: DatabaseReference? = null
     }
 }
