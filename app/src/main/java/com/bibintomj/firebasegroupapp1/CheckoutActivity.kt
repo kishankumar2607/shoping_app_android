@@ -77,13 +77,27 @@ class CheckoutActivity : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId")
 
-        cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        cartRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists() && snapshot.childrenCount > 0) {
                     showCartWithItems()
                 } else {
                     showEmptyCartMessage()
                 }
+
+                var subTotal = 0.0
+                for (child in snapshot.children) {
+                    val cartItem = child.getValue(CartItem::class.java)
+                    if (cartItem?.product != null) {
+                        subTotal += cartItem.product.price * cartItem.count
+                    }
+                }
+                val tax = subTotal * 0.13
+                val total = subTotal + tax
+
+                binding.subTotalText.text = "Subtotal: $${String.format("%.2f", subTotal)}"
+                binding.taxText.text = "Tax (13%): $${String.format("%.2f", tax)}"
+                binding.totalText.text = "Total: $${String.format("%.2f", total)}"
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -102,13 +116,13 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun showEmptyCartMessage() {
         rView.visibility = View.GONE
-        paymentButton.visibility = View.GONE
+        binding.footerLayout.visibility = View.GONE
         emptyCartLayout.visibility = View.VISIBLE
     }
 
     private fun showCartWithItems() {
         rView.visibility = View.VISIBLE
-        paymentButton.visibility = View.VISIBLE
+        binding.footerLayout.visibility = View.VISIBLE
         emptyCartLayout.visibility = View.GONE
     }
 
