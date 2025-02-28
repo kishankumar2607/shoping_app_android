@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="brandMain">#4d1ef9</color>
     <color name="background">#FCFCFF</color>
+    <color name="grey">#A8A8A9</color>
 </resources>

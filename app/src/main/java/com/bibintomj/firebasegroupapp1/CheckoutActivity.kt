@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CheckoutActivity : AppCompatActivity() {
 
@@ -40,6 +43,13 @@ class CheckoutActivity : AppCompatActivity() {
 
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, 1)  // change the value to change the delivery date, set 2 for 2 days
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        val tomorrowDate = dateFormat.format(calendar.time)
+        val deliveryDate: TextView = findViewById(R.id.deliveryDetails)
+        deliveryDate.text = "Delivery by: $tomorrowDate"
 
         val backButton: ImageButton = findViewById(R.id.backButton)
         backButton.setOnClickListener({
@@ -92,12 +102,19 @@ class CheckoutActivity : AppCompatActivity() {
                         subTotal += cartItem.product.price * cartItem.count
                     }
                 }
-                val tax = subTotal * 0.13
-                val total = subTotal + tax
 
-                binding.subTotalText.text = "Subtotal: $${String.format("%.2f", subTotal)}"
-                binding.taxText.text = "Tax (13%): $${String.format("%.2f", tax)}"
-                binding.totalText.text = "Total: $${String.format("%.2f", total)}"
+                val deliveryFee = if (subTotal >= 1000) 0.0 else 30.0
+
+                val deliveryMessage: TextView = findViewById(R.id.freeDeliveryMessage)
+                deliveryMessage.visibility = if (subTotal >= 1000) View.GONE else View.VISIBLE
+
+                val tax = subTotal * 0.13
+                val total = subTotal + tax + deliveryFee
+
+                binding.subTotalAmount.text = "$${String.format("%.2f", subTotal)}"
+                binding.deliveryAmount.text = "$${String.format("%.2f", deliveryFee)}"
+                binding.taxAmount.text = "$${String.format("%.2f", tax)}"
+                binding.totalAmount.text = "$${String.format("%.2f", total)}"
             }
 
             override fun onCancelled(error: DatabaseError) {
