@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -76,7 +77,12 @@ class CartAdapter(options: FirebaseRecyclerOptions<CartItem>) : FirebaseRecycler
                 val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
                 val newCount = currentCount + change
 
-                holder.txtCount.text = "${newCount}"
+                holder.txtCount.text = "${currentCount}"
+
+                if (newCount > 10 && change > 0) {
+                    Toast.makeText(holder.itemView.context, "Only 10 items allowed", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 if (newCount > 0) {
                     val cartItem = CartItem(cartItem.product, newCount)
                     if (currentCount != newCount) {

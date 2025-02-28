@@ -30,8 +30,10 @@
             app:srcCompat="@drawable/back_arrow" />
 
         <TextView
-            android:layout_width="300dp"
+            android:id="@+id/titleText"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Cart Summary"
             android:textAlignment="center"

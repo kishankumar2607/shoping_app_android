@@ -69,15 +69,15 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         }
 
         holder.btnPlus.setOnClickListener({
-            updateCountForProductInCart(model, 1)
+            updateCountForProductInCart(model, 1, holder)
         })
 
         holder.btnMinus.setOnClickListener({
-            updateCountForProductInCart(model, -1)
+            updateCountForProductInCart(model, -1, holder)
         })
 
         holder.btnAddToCart.setOnClickListener({
-            updateCountForProductInCart(model, 1)
+            updateCountForProductInCart(model, 1, holder)
 
         })
     }
@@ -112,13 +112,17 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
         cartRef.addValueEventListener(listener)
     }
 
-    private fun updateCountForProductInCart(product: Product, change: Int) {
+    private fun updateCountForProductInCart(product: Product, change: Int, holder: MyViewHolder) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${product.id}")
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
                 val newCount = currentCount + change
+                if (newCount > 10 && change > 0) {
+                    Toast.makeText(holder.itemView.context, "Only 10 items allowed", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 if (newCount > 0) {
                     val cartItem = CartItem(product, newCount)
                     cartRef.setValue(cartItem)

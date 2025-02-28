@@ -2,6 +2,7 @@ package com.bibintomj.firebasegroupapp1
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,7 +22,6 @@ class ProductActivity : AppCompatActivity() {
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val query = FirebaseDatabase.getInstance().reference.child("products")
         val options = FirebaseRecyclerOptions.Builder<Product>().setQuery(query, Product::class.java).build()
 
@@ -29,6 +29,15 @@ class ProductActivity : AppCompatActivity() {
         val productsRecyclerView: RecyclerView = findViewById(R.id.productsRecyclerView)
         productsRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productsRecyclerView.adapter = adapter
+
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if ((adapter?.itemCount ?: 0) > 0) {
+                    binding.progressBar?.visibility = View.GONE
+                }
+            }
+        })
 
         val cartButton: ImageButton = findViewById(R.id.cartButton)
         cartButton.setOnClickListener({

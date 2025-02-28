@@ -140,6 +140,11 @@ class DetailActivity : AppCompatActivity() {
                 val newCount = currentCount + change
 
                 txtCount.text = "${newCount}"
+
+                if (newCount > 10 && change > 0) {
+                    Toast.makeText(this@DetailActivity, "Only 10 items allowed", Toast.LENGTH_SHORT).show()
+                    return
+                }
                 if (newCount > 0) {
                     val cartItem = CartItem(product, newCount)
                     if (currentCount != newCount) {
