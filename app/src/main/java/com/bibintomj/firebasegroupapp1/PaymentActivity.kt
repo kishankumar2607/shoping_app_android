@@ -1,7 +1,10 @@
 package com.bibintomj.firebasegroupapp1
 
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -42,6 +45,8 @@ class PaymentActivity : AppCompatActivity() {
         binding = ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
+
         val backButton: ImageButton = findViewById(R.id.backButton)
         backButton.setOnClickListener({
             finish()
@@ -61,14 +66,22 @@ class PaymentActivity : AppCompatActivity() {
         cancelButton = findViewById(R.id.cancel_button)
         confirmButton = findViewById(R.id.confirm_button)
 
+        val cardTypes = listOf("Credit", "Debit")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, cardTypes)
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.cardType_input)
+        autoCompleteTextView.setAdapter(adapter)
+
         cancelButton.setOnClickListener {
             finish()
         }
 
         confirmButton.setOnClickListener {
-            if (validateInputs()) {
-                Toast.makeText(this, "Checkout successful!", Toast.LENGTH_SHORT).show()
-            }
+//            if (validateInputs()) {
+                val intent = Intent(this, OrderConfirmationActivity::class.java)
+                intent.putExtra("totalAmount", totalAmount)
+                startActivity(intent)
+                finish()
+//            }
         }
     }
 

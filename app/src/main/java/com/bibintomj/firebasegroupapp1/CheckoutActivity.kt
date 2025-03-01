@@ -38,6 +38,8 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var emptyCartLayout: View
     private lateinit var shopNowButton: Button
 
+    private var currentTotal = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,6 +65,7 @@ class CheckoutActivity : AppCompatActivity() {
 
         paymentButton.setOnClickListener {
             val intent = Intent(this, PaymentActivity::class.java)
+            intent.putExtra("totalAmount", currentTotal)
             startActivity(intent)
             finish()
         }
@@ -110,6 +113,8 @@ class CheckoutActivity : AppCompatActivity() {
 
                 val tax = subTotal * 0.13
                 val total = subTotal + tax + deliveryFee
+
+                currentTotal = total
 
                 binding.subTotalAmount.text = "$${String.format("%.2f", subTotal)}"
                 binding.deliveryAmount.text = "$${String.format("%.2f", deliveryFee)}"
