@@ -22,6 +22,8 @@ class OrderConfirmationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderConfirmationBinding
     private lateinit var continueShopping: Button
     private lateinit var viewOrderDetails: Button
+    private lateinit var orderTotal: TextView
+    private lateinit var orderDate: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +31,14 @@ class OrderConfirmationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         continueShopping = findViewById(R.id.continueShoppingButton)
+        viewOrderDetails = findViewById(R.id.viewOrderButton)
+        orderDate = findViewById(R.id.orderDate)
+        orderTotal = findViewById(R.id.orderTotal)
 
-        val deliveryDate: TextView = findViewById(R.id.orderDate)
-        deliveryDate.text = "Delivery Date: ${getDeliveryDate()}"
+        orderDate.text = "Delivery Date: ${getDeliveryDate()}"
 
         val totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
-        binding.orderTotal.text = "Total: $${String.format("%.2f", totalAmount)}"
+        orderTotal.text = "Total: $${String.format("%.2f", totalAmount)}"
 
         continueShopping.setOnClickListener {
             val intent = Intent(this, ProductActivity::class.java)
@@ -42,7 +46,6 @@ class OrderConfirmationActivity : AppCompatActivity() {
             finish()
         }
 
-        viewOrderDetails = findViewById(R.id.viewOrderButton)
         viewOrderDetails.setOnClickListener {
             Toast.makeText(this, "Working on order details page", Toast.LENGTH_SHORT).show()
         }

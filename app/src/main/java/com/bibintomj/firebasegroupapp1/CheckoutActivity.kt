@@ -37,6 +37,7 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var rView: RecyclerView
     private lateinit var emptyCartLayout: View
     private lateinit var shopNowButton: Button
+    private lateinit var footerLayout: View
 
     private var currentTotal = 0.0
 
@@ -62,6 +63,7 @@ class CheckoutActivity : AppCompatActivity() {
         rView = findViewById(R.id.rView)
         emptyCartLayout = findViewById(R.id.emptyCartLayout)
         shopNowButton = findViewById(R.id.shopNowButton)
+        footerLayout = findViewById(R.id.footerLayout)
 
         paymentButton.setOnClickListener {
             val intent = Intent(this, PaymentActivity::class.java)
@@ -116,10 +118,15 @@ class CheckoutActivity : AppCompatActivity() {
 
                 currentTotal = total
 
-                binding.subTotalAmount.text = "$${String.format("%.2f", subTotal)}"
-                binding.deliveryAmount.text = "$${String.format("%.2f", deliveryFee)}"
-                binding.taxAmount.text = "$${String.format("%.2f", tax)}"
-                binding.totalAmount.text = "$${String.format("%.2f", total)}"
+                val subTotalAmount: TextView = findViewById(R.id.subTotalAmount)
+                val deliveryAmount: TextView = findViewById(R.id.deliveryAmount)
+                val taxAmount: TextView = findViewById(R.id.taxAmount)
+                val totalAmount: TextView = findViewById(R.id.totalAmount)
+
+                subTotalAmount.text = "$${String.format("%.2f", subTotal)}"
+                deliveryAmount.text = "$${String.format("%.2f", deliveryFee)}"
+                taxAmount.text = "$${String.format("%.2f", tax)}"
+                totalAmount.text = "$${String.format("%.2f", total)}"
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -138,16 +145,15 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun showEmptyCartMessage() {
         rView.visibility = View.GONE
-        binding.footerLayout.visibility = View.GONE
+        footerLayout.visibility = View.GONE
         emptyCartLayout.visibility = View.VISIBLE
     }
 
     private fun showCartWithItems() {
         rView.visibility = View.VISIBLE
-        binding.footerLayout.visibility = View.VISIBLE
+        footerLayout.visibility = View.VISIBLE
         emptyCartLayout.visibility = View.GONE
     }
-
 }
 
 
