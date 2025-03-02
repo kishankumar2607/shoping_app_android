@@ -48,7 +48,7 @@ class CheckoutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DATE, 1)  // change the value to change the delivery date, set 2 for 2 days
+        calendar.add(Calendar.DATE, 1)
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         val tomorrowDate = dateFormat.format(calendar.time)
         val deliveryDate: TextView = findViewById(R.id.deliveryDetails)

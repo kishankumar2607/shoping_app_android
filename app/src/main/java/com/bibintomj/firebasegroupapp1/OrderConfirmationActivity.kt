@@ -54,7 +54,7 @@ class OrderConfirmationActivity : AppCompatActivity() {
 
     private fun getDeliveryDate(): String {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DATE, 1)  // Change to 2 if you want delivery after 2 days.
+        calendar.add(Calendar.DATE, 1)
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
