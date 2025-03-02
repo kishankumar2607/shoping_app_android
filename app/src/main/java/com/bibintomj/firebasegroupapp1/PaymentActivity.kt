@@ -76,17 +76,30 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         confirmButton.setOnClickListener {
-//            if (validateInputs()) {
-                val intent = Intent(this, OrderConfirmationActivity::class.java)
-                intent.putExtra("totalAmount", totalAmount)
-                startActivity(intent)
-                finish()
-//            }
+            if (validateInputs()) {
+                emptyCart();
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
+    }
+
+    private fun emptyCart() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId")
+        cartRef.removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
+                val intent = Intent(this, OrderConfirmationActivity::class.java)
+                intent.putExtra("totalAmount", totalAmount)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to clear cart. Please try again.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun validateInputs(): Boolean {
