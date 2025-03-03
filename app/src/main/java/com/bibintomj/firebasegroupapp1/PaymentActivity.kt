@@ -76,9 +76,9 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         confirmButton.setOnClickListener {
-            if (validateInputs()) {
-                emptyCart();
-            }
+//            if (validateInputs()) {
+                emptyCart()
+//            }
         }
     }
 
