@@ -117,19 +117,6 @@
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="24dp"
                 app:cornerRadius="15dp"/>
-
-            <Button
-                android:id="@+id/viewOrderButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="View Order Details"
-                android:textAllCaps="false"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/black"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="15dp"/>
         </LinearLayout>
     </ScrollView>
 
