@@ -29,7 +29,7 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var emailInput: TextInputEditText
     private lateinit var streetInput: TextInputEditText
     private lateinit var cityInput: TextInputEditText
-    private lateinit var provinceInput: TextInputEditText
+    private lateinit var provinceInput: AutoCompleteTextView
     private lateinit var postalInput: TextInputEditText
     private lateinit var cardNumberInput: TextInputEditText
     private lateinit var cardNameInput: TextInputEditText
@@ -38,6 +38,10 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var cancelButton: Button
     private lateinit var confirmButton: Button
 
+    private val provinces = listOf(
+        "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador",
+        "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +52,7 @@ class PaymentActivity : AppCompatActivity() {
         val totalAmount = intent.getDoubleExtra("totalAmount", 0.0)
 
         val backButton: ImageButton = findViewById(R.id.backButton)
-        backButton.setOnClickListener({
-            finish()
-        })
+        backButton.setOnClickListener { finish() }
 
         fullnameInput = findViewById(R.id.fullname_input)
         emailInput = findViewById(R.id.email_input)
@@ -66,24 +68,22 @@ class PaymentActivity : AppCompatActivity() {
         cancelButton = findViewById(R.id.cancel_button)
         confirmButton = findViewById(R.id.confirm_button)
 
-        val cardTypes = listOf("Credit", "Debit")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, cardTypes)
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.cardType_input)
-        autoCompleteTextView.setAdapter(adapter)
 
-        cancelButton.setOnClickListener {
-            finish()
-        }
+        val provinceAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, provinces)
+        provinceInput.setAdapter(provinceAdapter)
+
+        val cardTypes = listOf("Credit", "Debit")
+        val cardAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, cardTypes)
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.cardType_input)
+        autoCompleteTextView.setAdapter(cardAdapter)
+
+        cancelButton.setOnClickListener { finish() }
 
         confirmButton.setOnClickListener {
-//            if (validateInputs()) {
+            if (validateInputs()) {
                 emptyCart()
-//            }
+            }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun emptyCart() {
@@ -127,8 +127,9 @@ class PaymentActivity : AppCompatActivity() {
             isValid = false
         }
 
-        if (provinceInput.text.toString().trim().isEmpty()) {
-            provinceInput.error = "Enter your province"
+        val province = provinceInput.text.toString().trim()
+        if (province.isEmpty() || !provinces.contains(province)) {
+            provinceInput.error = "Select a valid province"
             isValid = false
         }
 
@@ -173,6 +174,5 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         return isValid
-
     }
 }

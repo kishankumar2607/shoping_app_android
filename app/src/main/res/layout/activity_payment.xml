@@ -87,7 +87,8 @@
                     android:id="@+id/fullname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -101,7 +102,8 @@
                     android:id="@+id/email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:maxLength="100" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -125,7 +127,8 @@
                     android:id="@+id/street_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:maxLength="100" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +142,8 @@
                     android:id="@+id/city_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -152,17 +156,18 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/provinceLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:hint="Province">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/province_input"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:layout_height="50dp"
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -177,7 +182,8 @@
                         android:id="@+id/postal_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:maxLength="7" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -218,7 +224,8 @@
                     android:id="@+id/cardno_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="16" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -232,7 +239,8 @@
                     android:id="@+id/cardname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -255,7 +263,8 @@
                         android:id="@+id/expiry_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date" />
+                        android:inputType="date"
+                        android:maxLength="5" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -270,7 +279,8 @@
                         android:id="@+id/cvv_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberPassword" />
+                        android:inputType="numberPassword"
+                        android:maxLength="3" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
