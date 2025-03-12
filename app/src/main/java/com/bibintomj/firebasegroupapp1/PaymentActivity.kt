@@ -8,15 +8,8 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bibintomj.firebasegroupapp1.databinding.ActivityCheckoutBinding
 import com.bibintomj.firebasegroupapp1.databinding.ActivityPaymentBinding
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -131,6 +124,8 @@ class PaymentActivity : AppCompatActivity() {
         if (province.isEmpty() || !provinces.contains(province)) {
             provinceInput.error = "Select a valid province"
             isValid = false
+        } else {
+            provinceInput.error = null
         }
 
         val postalCodePattern = Regex("^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$")

@@ -181,15 +181,33 @@
 
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btnAddToCart"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/brandMain"
-                            android:text="Add to Cart"
-                            app:cornerRadius="15dp" />
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/btnBuyNow"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:backgroundTint="#154D1EF9"
+                                android:text="Buy Now"
+                                android:textColor="@color/brandMain"
+                                app:cornerRadius="15dp" />
+
+                            <Button
+                                android:id="@+id/btnAddToCart"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/brandMain"
+                                android:text="Add to Cart"
+                                app:cornerRadius="15dp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

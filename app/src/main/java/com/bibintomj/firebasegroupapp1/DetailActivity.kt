@@ -10,23 +10,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.bibintomj.firebasegroupapp1.ProductsAdapter.MyViewHolder
 import com.bibintomj.firebasegroupapp1.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import java.lang.Error
 
 class DetailActivity : AppCompatActivity() {
 
@@ -41,7 +33,8 @@ class DetailActivity : AppCompatActivity() {
 
         val backButton: ImageButton = findViewById(R.id.backButton)
         val cartButton: ImageButton = findViewById(R.id.cartButton)
-        val addToCartButton: Button = findViewById(R.id.btnAddToCart)
+        val btnAddToCart: Button = findViewById(R.id.btnAddToCart)
+        val btnBuyNow: Button = findViewById(R.id.btnBuyNow)
 
         backButton.setOnClickListener({
             finish()
@@ -66,10 +59,19 @@ class DetailActivity : AppCompatActivity() {
             updateCountForProductInCart(product, -1)
         })
 
-        addToCartButton.setOnClickListener({
+        btnAddToCart.setOnClickListener({
             val productId = intent.getStringExtra("productId")
             if (productId != null) {
                 updateCountForProductInCart(product, 1)
+            }
+        })
+
+        btnBuyNow.setOnClickListener({
+            val productId = intent.getStringExtra("productId")
+            if (productId != null) {
+                updateCountForProductInCart(product, 1)
+                val intent = Intent(this, CheckoutActivity::class.java)
+                startActivity(intent)
             }
         })
     }
@@ -133,6 +135,7 @@ class DetailActivity : AppCompatActivity() {
         val txtCount: TextView = findViewById(R.id.txtCount)
         val linearLayoutCount: LinearLayout = findViewById(R.id.linearLayoutCount)
         val btnAddToCart: Button = findViewById(R.id.btnAddToCart)
+        val btnBuyNow: Button = findViewById(R.id.btnBuyNow)
 
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -152,10 +155,12 @@ class DetailActivity : AppCompatActivity() {
                     }
                     linearLayoutCount.visibility = View.VISIBLE
                     btnAddToCart.visibility = View.GONE
+                    btnBuyNow.visibility = View.GONE
                 } else {
                     cartRef.removeValue()
                     linearLayoutCount.visibility = View.GONE
                     btnAddToCart.visibility = View.VISIBLE
+                    btnBuyNow.visibility = View.VISIBLE
                 }
             }
 

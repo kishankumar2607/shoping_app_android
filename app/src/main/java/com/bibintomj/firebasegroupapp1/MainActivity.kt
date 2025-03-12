@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         val btnGetStarted: Button = findViewById(R.id.btnGetStarted)
         btnGetStarted.setOnClickListener({
             createSigninIntent()
-//            navigateToProductListing()
         })
     }
 

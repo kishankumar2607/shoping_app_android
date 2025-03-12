@@ -11,11 +11,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -53,12 +51,6 @@ class ProductsAdapter(options: FirebaseRecyclerOptions<Product>) : FirebaseRecyc
                 .load(image)
                 .into(holder.imgProduct)
         }
-
-//        val productId: String? = getRef(position).key
-//
-//        if (productId != null) {
-//            updateCountForProductInCart(model, 0, holder)
-//        }
 
         attachCartListener(model, holder)
 

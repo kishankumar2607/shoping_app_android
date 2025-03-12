@@ -3,11 +3,9 @@ package com.bibintomj.firebasegroupapp1
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
@@ -69,13 +68,13 @@ class CartAdapter(options: FirebaseRecyclerOptions<CartItem>) : FirebaseRecycler
     }
 
     private fun updateCountForProductInCart(cartItem: CartItem, change: Int, holder: MyViewHolder) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = FirebaseDatabase.getInstance().reference.child("cart/$userId/${cartItem.product?.id ?: ""}")
+        val userId: String = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("cart/$userId/${cartItem.product?.id ?: ""}")
 
         cartRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val currentCount = snapshot.child("count").getValue(Int::class.java) ?: 0
-                val newCount = currentCount + change
+                val currentCount: Int = snapshot.child("count").getValue(Int::class.java) ?: 0
+                val newCount: Int = currentCount + change
 
                 holder.txtCount.text = "${currentCount}"
 
