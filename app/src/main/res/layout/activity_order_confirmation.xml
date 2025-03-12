@@ -61,47 +61,47 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/orderDetailsCard"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginTop="24dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                android:layout_marginTop="24dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center_horizontal">
+                    android:padding="24dp">
 
                     <TextView
                         android:id="@+id/orderNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Order No: #123456"
+                        android:textColor="#000000"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#000000" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/orderDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Delivery Date: 12 Aug 2025"
-                        android:textSize="14sp"
                         android:layout_marginTop="8dp"
-                        android:textColor="#444444" />
+                        android:text="Delivery Date: 12 Aug 2025"
+                        android:textColor="#444444"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/orderTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total: $7140"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:layout_marginTop="8dp"
-                        android:textColor="@color/brandMain" />
+                        android:text="Total: $7140"
+                        android:textColor="@color/brandMain"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
