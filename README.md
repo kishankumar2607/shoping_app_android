@@ -28,14 +28,6 @@ The **Firebase Group App** is an Android application designed to simulate a succ
 
 ---
 
-## Screenshots
-
-### Order Confirmation Screen
-- Confirmation message with a success icon.
-- Order number, order date, and total amount details displayed.
-
----
-
 ## Technologies Used
 
 - **Android Studio**: IDE used for building the app.
