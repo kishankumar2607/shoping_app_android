@@ -30,7 +30,7 @@ The Firebase Group App is an Android application designed to provide users with 
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/firebase-group-app.git
+    git clone https://github.com/kishankumar2607/shoping_app_android.git
     ```
 
 2. **Open the project in Android Studio**:
