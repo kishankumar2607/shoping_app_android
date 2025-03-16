@@ -52,4 +52,4 @@ To run the Firebase Group App, follow these steps:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/kishankumar2607/shoping_app_android.git
+   git clone https://github.com/kishankumar2607/shopping_app_android.git
