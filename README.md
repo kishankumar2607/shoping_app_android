@@ -1,92 +1,55 @@
 # Firebase Group App
 
 ## Overview
-
-The Firebase Group App is an Android application designed to provide users with an order confirmation screen, showcasing their order details and allowing them to continue shopping or view their order details. It includes integration with Firebase for handling user authentication and backend operations (if applicable). This project is primarily focused on the order confirmation functionality and the user interface layout for a seamless order experience.
-
-## Features
-
-- **Order Confirmation Screen**: The user is presented with an order confirmation screen after placing an order. This includes a confirmation message, the order number, delivery date, and total order cost.
-  
-- **Continue Shopping Button**: Redirects the user back to the product page to continue shopping. 
-  
-- **View Order Details Button**: A placeholder feature, for now, displays a toast message, signaling that the order details page is under development.
-  
-- **Dynamic Delivery Date**: The app calculates the delivery date by adding one day to the current date and formats it in a user-friendly manner.
+The **Firebase Group App** is an Android application designed to simulate a successful order placement process. It allows users to view a confirmation screen with details such as order number, delivery date, and total order cost. Users can continue shopping or view their order details, providing a seamless shopping experience.
 
 ---
 
-## Prerequisites
-
-- **Android Studio**: The project requires Android Studio to be opened and built.
-  
-- **Firebase Setup**: Make sure Firebase is set up in your project if you're integrating Firebase for other features like authentication or data storage.
-  
-- **Dependencies**: Ensure that all necessary libraries and dependencies are included in the project.
-  
----
-
-## Installation
-
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/kishankumar2607/shoping_app_android.git
-    ```
-
-2. **Open the project in Android Studio**:
-   - Open Android Studio and select "Open an existing project."
-   - Navigate to the directory where you cloned the repository and select the project folder.
-
-3. **Sync the Gradle files**:
-   - After opening the project, Android Studio will prompt you to sync the project with Gradle. Ensure you do this to fetch all dependencies.
-   
-4. **Run the app**:
-   - Select either an Android device or an emulator to run the app on.
-   - Click on the "Run" button in Android Studio to start the application.
-
----
-
-## Dependencies
-
-- **Android SDK**: Ensure that your Android SDK is up-to-date to use the latest Android features.
-  
-- **Firebase**: For any Firebase-related functionalities (e.g., user authentication, database).
-  
-- **Glide**: For image loading and caching.
-  
-- **Material Components**: For advanced UI components such as buttons, card views, and text fields.
+## Key Features
+- **Order Confirmation Screen**: After an order is placed, users are shown a confirmation screen displaying their order number, delivery date, and total amount.
+- **Dynamic Delivery Date**: The app calculates and displays the delivery date by adding one day to the current date.
+- **Continue Shopping**: A button that redirects users to a shopping page where they can browse more products.
+- **View Order Details**: A placeholder button that, in the future, will navigate to a detailed page showing full order information.
+- **Firebase Integration**: The app is built with Firebase, though it's currently being used mainly for authentication. Future enhancements may include storing and retrieving order data from Firebase.
 
 ---
 
 ## App Structure
 
-### `OrderConfirmationActivity` 
+### Main Components:
+1. **OrderConfirmationActivity**:
+   - Displays order-related information: confirmation icon, order number, order date, and total order cost.
+   - **Buttons**:
+     - **Continue Shopping**: Redirects users to the product page (`ProductActivity`).
+     - **View Order Details**: Currently shows a toast message, but can be expanded to show more detailed information in the future.
 
-The `OrderConfirmationActivity` serves as the screen where the user can see the confirmation details of their order. It utilizes **view binding** to manage UI components. Below is a breakdown of key elements:
+2. **ProductActivity**:
+   - Allows users to browse products, add them to their cart, and proceed to checkout.
 
-1. **Confirmation Icon (`ImageView`)**: Displays an image indicating that the order has been confirmed (e.g., a checkmark or success icon).
+---
 
-2. **Order Confirmation Title (`TextView`)**: A bold text element that greets the user with "Thank You!" or a similar message.
+## Screenshots
 
-3. **Order Confirmation Message (`TextView`)**: A text element informing the user that their order has been successfully placed.
+### Order Confirmation Screen
+- Confirmation message with a success icon.
+- Order number, order date, and total amount details displayed.
 
-4. **Order Details Card (`CardView`)**:
-    - **Order Number**: Displays the unique order number.
-    - **Order Date**: Displays the dynamic delivery date, generated by adding one day to the current date.
-    - **Order Total**: Displays the total cost of the order, passed via an `Intent` from a previous screen.
+---
 
-5. **Continue Shopping Button**: This button, when clicked, redirects the user back to the product page (`ProductActivity`).
+## Technologies Used
 
-6. **View Order Details Button**: Currently displays a toast message that the order details page is under development.
+- **Android Studio**: IDE used for building the app.
+- **Firebase**: Used for authentication (potentially used for data storage in future versions).
+- **Kotlin**: Programming language used for app development.
+- **XML**: Layout design for the UI components.
 
-### `getDeliveryDate()` Method
+---
 
-This method calculates the delivery date by adding one day to the current date. It uses the `Calendar` and `SimpleDateFormat` classes to generate the formatted date.
+## Installation and Setup
 
-```kotlin
-private fun getDeliveryDate(): String {
-    val calendar = Calendar.getInstance()
-    calendar.add(Calendar.DATE, 1)
-    val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-    return dateFormat.format(calendar.time)
-}
+To run the Firebase Group App, follow these steps:
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/kishankumar2607/shoping_app_android.git
